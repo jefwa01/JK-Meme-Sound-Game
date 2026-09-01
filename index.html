@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>JK Meme Sound Challenge</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+margin:0;
+background:#050505;
+color:#fff;
+font-family:Arial,sans-serif
+}
+.app{
+max-width:600px;
+margin:auto;
+min-height:100vh;
+padding:15px;
+background:linear-gradient(#191919,#050505)
+}
+header{
+height:60px;
+display:flex;
+align-items:center;
+justify-content:space-between
+}
+.logo{
+font-size:28px;
+font-weight:900;
+cursor:pointer
+}
+.small{
+font-size:10px;
+color:#777
+}
+.screen{display:none}
+.screen.active{display:block}
+
+.home{
+text-align:center;
+padding-top:70px
+}
+.icon{font-size:80px}
+.home h1{font-size:35px}
+.home p{
+color:#999;
+line-height:1.5
+}
+
+button{
+font-family:Arial;
+cursor:pointer;
+color:#fff
+}
+
+.play{
+width:100%;
+padding:18px;
+margin-top:20px;
+border:0;
+border-radius:17px;
+background:#ff0050;
+font-size:18px;
+font-weight:900
+}
+
+.back{
+width:100%;
+padding:15px;
+margin-top:12px;
+border:2px solid #333;
+border-radius:15px;
+background:#151515;
+font-weight:900
+}
+
+/* GAME */
+
+.progress{
+height:7px;
+background:#292929;
+border-radius:20px;
+overflow:hidden
+}
+.bar{
+height:100%;
+width:0;
+background:#ff0050
+}
+.info{
+display:flex;
+justify-content:space-between;
+margin-top:15px;
+font-size:13px;
+color:#aaa;
+font-weight:bold
+}
+.title{
+text-align:center;
+font-size:24px;
+margin:22px 0 5px
+}
+.subtitle{
+text-align:center;
+font-size:14px;
+color:#888;
+margin-bottom:18px
+}
+.sound{
+background:#111;
+border:2px solid #303030;
+border-radius:20px;
+padding:20px;
+text-align:center
+}
+.soundIcon{font-size:50px}
+.soundBtn{
+width:100%;
+padding:16px;
+margin-top:12px;
+border:0;
+border-radius:15px;
+background:#ff0050;
+font-weight:900
+}
+.timer{
+text-align:center;
+font-size:25px;
+font-weight:900;
+margin:15px
+}
+.answers{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:12px
+}
+.answer{
+position:relative;
+padding:5px;
+border:3px solid #303030;
+border-radius:18px;
+background:#151515;
+overflow:hidden
+}
+.answer img{
+display:block;
+width:100%;
+aspect-ratio:1/1;
+object-fit:cover;
+border-radius:12px;
+background:#222
+}
+.letter{
+position:absolute;
+top:10px;
+left:10px;
+width:38px;
+height:38px;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+background:#ff0050;
+font-weight:900;
+z-index:2
+}
+.correct{
+border-color:#19df78!important
+}
+.wrong{
+border-color:#ff0050!important
+}
+.message{
+height:35px;
+text-align:center;
+font-weight:900;
+padding-top:8px
+}
+
+/* OWNER */
+
+.ownerHead{
+display:flex;
+justify-content:space-between;
+align-items:center
+}
+.ownerCard{
+background:#111;
+border:2px solid #292929;
+border-radius:20px;
+padding:16px;
+margin-top:15px
+}
+.ownerCard p{
+color:#999;
+font-size:13px;
+line-height:1.5
+}
+.pin{
+width:100%;
+padding:14px;
+margin-top:10px;
+border-radius:12px;
+border:2px solid #333;
+background:#080808;
+color:#fff;
+font-size:18px
+}
+.ownerBtn{
+width:100%;
+padding:15px;
+margin-top:12px;
+border:0;
+border-radius:14px;
+background:#ff0050;
+font-weight:900
+}
+.admin{
+display:none
+}
+.note{
+padding:12px;
+margin-top:12px;
+border-radius:12px;
+background:#241500;
+color:#ffc46b;
+font-size:12px;
+line-height:1.5
+}
+.round{
+margin-top:12px;
+padding:10px;
+background:#181818;
+border:2px solid #292929;
+border-radius:15px
+}
+.grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:7px;
+margin-top:8px
+}
+.grid img{
+width:100%;
+height:90px;
+object-fit:cover;
+border-radius:8px;
+background:#222
+}
+
+/* RESULT */
+
+.overlay{
+position:fixed;
+inset:0;
+display:none;
+align-items:center;
+justify-content:center;
+background:rgba(0,0,0,.96);
+padding:20px;
+z-index:50
+}
+.result{
+width:100%;
+max-width:420px;
+background:#151515;
+border:2px solid #333;
+border-radius:25px;
+padding:30px 20px;
+text-align:center
+}
+.emoji{font-size:70px}
+.result h2{font-size:34px}
+.result p{color:#999}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<header>
+
+<div
+class="logo"
+onclick="secretTap()">
+JK
+</div>
+
+<div class="small">
+MEME SOUND CHALLENGE
+</div>
+
+</header>
+
+
+<!-- HOME -->
+
+<section
+id="home"
+class="screen active">
+
+<div class="home">
+
+<div class="icon">🔊</div>
+
+<h1>GUESS THE SOUND</h1>
+
+<p>
+Listen to the meme sound.<br>
+Choose the correct picture.
+</p>
+
+<button
+class="play"
+onclick="startGame()">
+
+▶ PLAY GAME
+
+</button>
+
+</div>
+
+</section>
+
+
+<!-- GAME -->
+
+<section
+id="game"
+class="screen">
+
+<div class="progress">
+<div
+id="bar"
+class="bar">
+</div>
+</div>
+
+<div class="info">
+
+<div>
+ROUND
+<span id="round">1</span>/40
+</div>
+
+<div>
+SCORE:
+<span id="score">0</span>
+</div>
+
+</div>
+
+<h1 class="title">
+WHO MADE THIS SOUND?
+</h1>
+
+<div class="subtitle">
+Listen and choose A, B, C or D.
+</div>
+
+<div class="sound">
+
+<div class="soundIcon">🔊</div>
+
+<button
+class="soundBtn"
+onclick="playSound()">
+
+▶ PLAY MEME SOUND
+
+</button>
+
+</div>
+
+<div class="timer">
+⏱️ <span id="time">10</span>
+</div>
+
+<div
+id="answers"
+class="answers">
+</div>
+
+<div
+id="message"
+class="message">
+</div>
+
+<button
+class="back"
+onclick="goHome()">
+
+🏠 EXIT GAME
+
+</button>
+
+</section>
+
+
+<!-- OWNER -->
+
+<section
+id="owner"
+class="screen">
+
+<div class="ownerHead">
+
+<h2>👑 OWNER PANEL</h2>
+
+<button
+class="back"
+onclick="goHome()">
+
+EXIT
+
+</button>
+
+</div>
+
+<div class="ownerCard">
+
+<h3>🔐 OWNER ACCESS</h3>
+
+<p>
+Only you should use this panel.
+Players do not need the PIN.
+</p>
+
+<input
+id="pin"
+class="pin"
+type="password"
+inputmode="numeric"
+placeholder="Owner PIN">
+
+<button
+class="ownerBtn"
+onclick="unlock()">
+
+UNLOCK
+
+</button>
+
+<div id="pinMsg"></div>
+
+</div>
+
+
+<div
+id="admin"
+class="admin">
+
+<div class="ownerCard">
+
+<h3>🎮 GAME CONTROL</h3>
+
+<p>
+The 40 rounds are controlled by the files
+inside your GitHub repository.
+</p>
+
+<div class="note">
+
+To change pictures or sounds, replace the
+files in your GitHub repository.
+
+<br><br>
+
+GitHub Pages does not allow this public webpage
+to secretly upload files into your repository.
+
+</div>
+
+</div>
+
+
+<div class="ownerCard">
+
+<h3>📋 40 ROUNDS</h3>
+
+<div id="roundList"></div>
+
+</div>
+
+
+<button
+class="ownerBtn"
+onclick="lock()">
+
+🔒 LOCK PANEL
+
+</button>
+
+</div>
+
+</section>
+
+</div>
+
+
+<!-- RESULT -->
+
+<div
+id="result"
+class="overlay">
+
+<div class="result">
+
+<div
+id="resultEmoji"
+class="emoji">
+💀
+</div>
+
+<h2
+id="resultTitle">
+GAME OVER
+</h2>
+
+<p
+id="resultText">
+</p>
+
+<button
+class="play"
+onclick="playAgain()">
+
+🔄 PLAY AGAIN
+
+</button>
+
+<button
+class="back"
+onclick="goHome()">
+
+🏠 HOME
+
+</button>
+
+</div>
+
+</div>
+
+
+<script>
+
+/*
+==================================================
+40 GAME ROUNDS
+==================================================
+
+PUT YOUR FILES IN:
+
+assets/images/
+
+assets/sounds/
+
+Example Round 1:
+
+r01a.jpg
+r01b.jpg
+r01c.jpg
+r01d.jpg
+
+r01.mp3
+
+==================================================
+*/
+
+const rounds=[];
+
+for(let i=1;i<=40;i++){
+
+const n=String(i).padStart(2,"0");
+
+rounds.push({
+
+number:i,
+
+A:`assets/images/r${n}a.jpg`,
+B:`assets/images/r${n}b.jpg`,
+C:`assets/images/r${n}c.jpg`,
+D:`assets/images/r${n}d.jpg`,
+
+sound:`assets/sounds/r${n}.mp3`,
+
+/*
+CHANGE THIS FOR EACH ROUND.
+A / B / C / D
+*/
+
+correct:"A"
+
+});
+
+}
+
+
+/*
+OWNER PIN
+
+Change 2026 to your own PIN.
+*/
+
+const OWNER_PIN="2026";
+
+
+let current=0;
+let score=0;
+let timer=null;
+let time=10;
+let answered=false;
+let audio=null;
+
+
+/*
+SCREEN
+*/
+
+function show(id){
+
+document
+.querySelectorAll(".screen")
+.forEach(x=>{
+x.classList.remove("active");
+});
+
+document
+.getElementById(id)
+.classList.add("active");
+
+}
+
+
+/*
+START GAME
+*/
+
+function startGame(){
+
+current=0;
+score=0;
+
+show("game");
+
+loadRound();
+
+}
+
+
+/*
+LOAD ROUND
+*/
+
+function loadRound(){
+
+clearInterval(timer);
+
+answered=false;
+
+if(audio){
+
+audio.pause();
+audio=null;
+
+}
+
+const r=rounds[current];
+
+
+document
+.getElementById("round")
+.textContent=current+1;
+
+
+document
+.getElementById("score")
+.textContent=score;
+
+
+document
+.getElementById("bar")
+.style.width=
+((current+1)/40*100)+"%";
+
+
+document
+.getElementById("message")
+.textContent="";
+
+
+const box=
+document.getElementById("answers");
+
+box.innerHTML="";
+
+
+["A","B","C","D"].forEach(letter=>{
+
+const button=
+document.createElement("button");
+
+button.className="answer";
+
+button.innerHTML=`
+
+<div class="letter">
+${letter}
+</div>
+
+<img
+src="${r[letter]}"
+alt="${letter}"
+>
+
+`;
+
+button.onclick=()=>{
+answer(letter,button);
+};
+
+box.appendChild(button);
+
+});
+
+
+time=10;
+
+document
+.getElementById("time")
+.textContent=time;
+
+
+timer=setInterval(()=>{
+
+time--;
+
+document
+.getElementById("time")
+.textContent=time;
+
+if(time<=0){
+
+clearInterval(timer);
+
+gameOver("TIME'S UP! ⏰");
+
+}
+
+},1000);
+
+}
+
+
+/*
+PLAY SOUND
+*/
+
+function playSound(){
+
+const r=rounds[current];
+
+if(audio){
+
+audio.pause();
+
+}
+
+audio=
+new Audio(r.sound);
+
+audio.play().catch(()=>{
+
+alert(
+"Sound not found. Check your GitHub sound file."
+);
+
+});
+
+}
+
+
+/*
+ANSWER
+*/
+
+function answer(letter,button){
+
+if(answered)return;
+
+answered=true;
+
+clearInterval(timer);
+
+const r=rounds[current];
+
+const buttons=
+document.querySelectorAll(".answer");
+
+buttons.forEach(x=>{
+x.style.pointerEvents="none";
+});
+
+
+if(letter===r.correct){
+
+button.classList.add("correct");
+
+score++;
+
+document
+.getElementById("score")
+.textContent=score;
+
+document
+.getElementById("message")
+.textContent=
+"✅ CORRECT! 🔥";
+
+
+setTimeout(()=>{
+
+current++;
+
+if(current>=40){
+
+win();
+
+}else{
+
+loadRound();
+
+}
+
+},900);
+
+}else{
+
+button.classList.add("wrong");
+
+buttons.forEach(x=>{
+
+const l=
+x
+.querySelector(".letter")
+.textContent
+.trim();
+
+if(l===r.correct){
+
+x.classList.add("correct");
+
+}
+
+});
+
+
+document
+.getElementById("message")
+.textContent=
+"❌ WRONG!";
+
+
+setTimeout(()=>{
+
+gameOver(
+"WRONG ANSWER! 💀"
+);
+
+},900);
+
+}
+
+}
+
+
+/*
+GAME OVER
+*/
+
+function gameOver(text){
+
+clearInterval(timer);
+
+if(audio)audio.pause();
+
+document
+.getElementById("resultEmoji")
+.textContent="💀";
+
+document
+.getElementById("resultTitle")
+.textContent="GAME OVER";
+
+document
+.getElementById("resultText")
+.textContent=
+text+
+" Score: "+
+score+
+"/40";
+
+document
+.getElementById("result")
+.style.display="flex";
+
+}
+
+
+/*
+WIN
+*/
+
+function win(){
+
+clearInterval(timer);
+
+if(audio)audio.pause();
+
+document
+.getElementById("resultEmoji")
+.textContent="🏆";
+
+document
+.getElementById("resultTitle")
+.textContent="YOU WON!";
+
+document
+.getElementById("resultText")
+.textContent=
+"🔥 You scored "+
+score+
+"/40";
+
+document
+.getElementById("result")
+.style.display="flex";
+
+}
+
+
+/*
+PLAY AGAIN
+*/
+
+function playAgain(){
+
+document
+.getElementById("result")
+.style.display="none";
+
+current=0;
+score=0;
+
+loadRound();
+
+}
+
+
+/*
+HOME
+*/
+
+function goHome(){
+
+clearInterval(timer);
+
+if(audio){
+
+audio.pause();
+audio=null;
+
+}
+
+document
+.getElementById("result")
+.style.display="none";
+
+show("home");
+
+}
+
+
+/*
+HIDDEN OWNER PANEL
+
+Tap JK five times.
+*/
+
+let taps=0;
+let tapTimer=null;
+
+function secretTap(){
+
+taps++;
+
+clearTimeout(tapTimer);
+
+tapTimer=setTimeout(()=>{
+taps=0;
+},2000);
+
+if(taps>=5){
+
+taps=0;
+
+show("owner");
+
+}
+
+}
+
+
+/*
+OWNER LOGIN
+*/
+
+function unlock(){
+
+const pin=
+document
+.getElementById("pin")
+.value;
+
+const msg=
+document
+.getElementById("pinMsg");
+
+
+if(pin===OWNER_PIN){
+
+document
+.getElementById("admin")
+.style.display="block";
+
+msg.innerHTML=
+"<p style='color:#19df78'>✅ Owner unlocked.</p>";
+
+showRounds();
+
+}else{
+
+msg.innerHTML=
+"<p style='color:#ff4d7d'>❌ Wrong PIN.</p>";
+
+}
+
+}
+
+
+/*
+LOCK
+*/
+
+function lock(){
+
+document
+.getElementById("admin")
+.style.display="none";
+
+document
+.getElementById("pin")
+.value="";
+
+}
+
+
+/*
+SHOW 40 ROUNDS
+*/
+
+function showRounds(){
+
+const list=
+document.getElementById("roundList");
+
+list.innerHTML="";
+
+
+rounds.forEach(r=>{
+
+const item=
+document.createElement("div");
+
+item.className="round";
+
+item.innerHTML=`
+
+<strong>
+ROUND ${r.number}
+</strong>
+
+<div class="grid">
+
+<img
+src="${r.A}"
+alt="A"
+>
+
+<img
+src="${r.B}"
+alt="B"
+>
+
+<img
+src="${r.C}"
+alt="C"
+>
+
+<img
+src="${r.D}"
+alt="D"
+>
+
+</div>
+
+<p class="small">
+
+Sound: ${r.sound}<br>
+Correct answer: <strong>${r.correct}</strong>
+
+</p>
+
+`;
+
+list.appendChild(item);
+
+});
+
+}
+
+</script>
+
+</body>
+</html>
